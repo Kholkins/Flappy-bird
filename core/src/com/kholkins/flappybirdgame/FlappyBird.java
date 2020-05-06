@@ -55,6 +55,9 @@ public class FlappyBird extends ApplicationAdapter {
         bottomTubeRectangles = new Rectangle[tubeNumber];
 
         random = new Random();
+        scoreFont = new BitmapFont();
+        scoreFont.setColor(Color.CYAN);
+        scoreFont.getData().setScale(10);
 
         bird = new Texture[2];
         bird[0] = new Texture("bird_wings_up.png");
@@ -87,10 +90,20 @@ public class FlappyBird extends ApplicationAdapter {
             gemestartflag = 1;
         }
         if (gemestartflag == 1) {
+
+            if (tubeX[passedTubeIndex] < Gdx.graphics.getWidth() / 2) {
+                gameScore++;
+
+                if (passedTubeIndex < tubeNumber-1) {
+                    passedTubeIndex++;
+                }else {
+                    passedTubeIndex = 0;
+                }
+            }
+
             if (Gdx.input.justTouched()) {
                 fallingSpeed = -30;
             }
-
 
             if (flyHeight > 0 || fallingSpeed < 0) {
                 fallingSpeed++;
@@ -136,6 +149,9 @@ public class FlappyBird extends ApplicationAdapter {
 
         batch.draw(bird[birdFlag], Gdx.graphics.getWidth() / 2 - bird[birdFlag].getWidth() / 2,
                 flyHeight);
+
+        scoreFont.draw(batch, String.valueOf(gameScore),100,200);
+
         batch.end();
 
         birdCircle.set(Gdx.graphics.getWidth() / 2,
